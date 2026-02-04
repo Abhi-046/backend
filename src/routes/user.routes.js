@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/user.controller.js";
+import { refreshAccessToken, registerUser } from "../controllers/user.controller.js";
 import upload from "../middleware/multer.middleware.js";
 import { loginUser, logout } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
@@ -24,5 +24,6 @@ router.route("/login").post(loginUser);
 
 //secued routes
 router.route("/logout").post(verifyJWT, logout);
+router.route("/refresh-token").post(refreshAccessToken);  
 
 export default router;
