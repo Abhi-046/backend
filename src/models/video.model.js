@@ -13,7 +13,7 @@ const videoSchema = new mongoose.Schema(
             required: true,
         },
         title:{
-            typr:String,
+            type:String,
             required:true,
 
         },
@@ -36,11 +36,13 @@ const videoSchema = new mongoose.Schema(
             default:true,
         },
         owner:{
-            type:Schema.Type.ObjectId,
+            type:mongoose.Schema.Types.ObjectId,
             ref:"User",
         }
     },
     { timestamps: true }
 );
 
-export const Video = mongoose.model("Video",videoSchema);
+videoSchema.plugin(mongooseAggregatePaginate);
+
+export default mongoose.model("Video",videoSchema);

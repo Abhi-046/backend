@@ -12,7 +12,7 @@ const generateAccessAndRefreshToken = async (userId) => {
 
         user.RefreshToken=RefreshToken;
         
-        user.save(RefreshToken, AccessToken);
+        await user.save();
 
         return { AccessToken, RefreshToken };
     } catch (error) {
@@ -78,7 +78,7 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Username or email and password are required");
     }
 
-    const user = User.findOne({
+    const user = await User.findOne({
         $or: [{ username }, { email }],
     });
     if (!user) {
@@ -113,7 +113,12 @@ const logout = asyncHandler(async(req,res)=>{
         throw new ApiError(404,"User not found");
     }       
     user.RefreshToken = null;
-    await user.save();      
+    await user.save();
+    
+    const options ={
+            httpOnly:true,
+            secure:true
+    }
     return res.status(200)  
 
     .clearCookie("accessToken",options)
